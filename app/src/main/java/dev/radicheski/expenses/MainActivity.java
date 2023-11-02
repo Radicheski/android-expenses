@@ -5,7 +5,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +26,21 @@ public class MainActivity extends AppCompatActivity {
         ExpenseAdapter adapter = new ExpenseAdapter();
         adapter.swipeCallback.attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
+        ExpenseEditor editor = new ExpenseEditor();
+        adapter.setEditor(editor);
+    }
+
+    public class ExpenseEditor {
+
+        public void edit(Expense expense, Runnable onCompletion) {
+            Intent intent = new Intent(getBaseContext(), ExpenseEdit.class);
+            intent.putExtra("expense", expense);
+
+            startActivity(intent);
+
+            if (Objects.nonNull(onCompletion)) onCompletion.run();
+        }
+
     }
 
 }

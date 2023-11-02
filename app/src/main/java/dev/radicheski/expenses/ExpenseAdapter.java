@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 import dev.radicheski.expenses.repository.ExpenseRepository;
 import dev.radicheski.expenses.repository.MockedExpenseRepository;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHolder> {
 
+    private MainActivity.ExpenseEditor editor;
     private ExpenseRepository repository;
     public final ItemTouchHelper swipeCallback = new ItemTouchHelper(new SwipeCallback());
 
@@ -44,10 +47,11 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         return repository.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public void setEditor(MainActivity.ExpenseEditor editor) {
+        this.editor = editor;
+    }
 
-        private static DateFormat dateFormat = DateFormat.getDateInstance();
-        private static NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView description;
         private TextView date;
@@ -61,13 +65,26 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
             date = itemView.findViewById(R.id.date);
             amount = itemView.findViewById(R.id.amount);
             category = itemView.findViewById(R.id.category);
+
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Expense expense) {
-            description.setText(expense.getDescription());
-            date.setText(dateFormat.format(expense.getDate()));
-            amount.setText(currencyFormat.format(expense.getAmount()));
-            category.setText(expense.getCategory());
+            Expense.ViewModel viewModel = expense.toViewModel();
+
+            description.setText(viewModel.getDescription());
+            date.setText(viewModel.getDate());
+            amount.setText(viewModel.getAmount());
+            category.setText(viewModel.getCategory());
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (Objects.isNull(editor)) return;
+
+            int position = getAdapterPosition();
+            Expense expense = repository.get(position);
+            editor.edit(expense, () -> notifyItemChanged(position));
         }
     }
 
