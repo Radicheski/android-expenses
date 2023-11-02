@@ -31,6 +31,10 @@ public class ExpenseRepository {
         expenses.remove(expense);
     }
 
+    public void remove(int index) {
+        expenses.remove(index);
+    }
+
     public Expense get(int index) {
         return expenses.get(index);
     }

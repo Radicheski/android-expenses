@@ -17,9 +17,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setAdapter(new ExpenseAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        ExpenseAdapter adapter = new ExpenseAdapter();
+        adapter.swipeCallback.attachToRecyclerView(recyclerView);
+        recyclerView.setAdapter(adapter);
     }
 
 }

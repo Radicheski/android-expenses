@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
@@ -14,6 +15,7 @@ import java.text.NumberFormat;
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHolder> {
 
     private ExpenseRepository repository;
+    public final ItemTouchHelper swipeCallback = new ItemTouchHelper(new SwipeCallback());
 
     public ExpenseAdapter() {
         super();
@@ -64,6 +66,32 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
             amount.setText(currencyFormat.format(expense.getAmount()));
             category.setText(expense.getCategory());
         }
+    }
+
+    private class SwipeCallback extends ItemTouchHelper.Callback {
+
+        @Override
+        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            return makeMovementFlags(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        }
+
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
+            return 0.8f;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            repository.remove(position);
+            notifyItemRemoved(position);
+        }
+
     }
 
 }
