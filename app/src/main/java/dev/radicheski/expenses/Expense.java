@@ -1,17 +1,17 @@
 package dev.radicheski.expenses;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Expense {
     private String description;
-    private LocalDateTime datetime;
+    private Date date;
     private BigDecimal amount;
     private String category;
 
-    public Expense(String description, LocalDateTime datetime, BigDecimal amount, String category) {
+    public Expense(String description, Date date, BigDecimal amount, String category) {
         this.description = description;
-        this.datetime = datetime;
+        this.date = date;
         this.amount = amount;
         this.category = category;
     }
@@ -24,12 +24,12 @@ public class Expense {
         this.description = description;
     }
 
-    public LocalDateTime getDatetime() {
-        return datetime;
+    public Date getDate() {
+        return date;
     }
 
-    public void setDatetime(LocalDateTime datetime) {
-        this.datetime = datetime;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public BigDecimal getAmount() {
