@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 
+import dev.radicheski.expenses.repository.ExpenseRepository;
+import dev.radicheski.expenses.repository.MockedExpenseRepository;
+
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHolder> {
 
     private ExpenseRepository repository;
@@ -19,7 +22,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
     public ExpenseAdapter() {
         super();
-        repository = ExpenseRepository.getInstance();
+        repository = MockedExpenseRepository.getInstance();
     }
 
     @NonNull
