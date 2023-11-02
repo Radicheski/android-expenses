@@ -23,16 +23,20 @@ public class ExpenseRepository {
         return instance;
     }
 
-    public List<Expense> getExpenses() {
-        return expenses;
-    }
-
-    public void addExpense(Expense expense) {
+    public void add(Expense expense) {
         expenses.add(expense);
     }
 
-    public void removeExpense(Expense expense) {
+    public void remove(Expense expense) {
         expenses.remove(expense);
+    }
+
+    public Expense get(int index) {
+        return expenses.get(index);
+    }
+
+    public int size() {
+        return expenses.size();
     }
 
     //FIXME Apagar depois que CRUD estiver completo
