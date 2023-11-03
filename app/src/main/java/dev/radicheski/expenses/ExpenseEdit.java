@@ -20,6 +20,8 @@ public class ExpenseEdit extends Activity {
 
     private Button save;
 
+    private Expense.ViewModel viewModel;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,7 @@ public class ExpenseEdit extends Activity {
         Bundle extras = getIntent().getExtras();
         if (Objects.nonNull(extras))  {
             Expense expense = (Expense) extras.getSerializable("expense");
-            Expense.ViewModel viewModel = expense.toViewModel();
+            viewModel = expense.toViewModel();
 
             description.getEditText().setText(viewModel.getDescription());
             date.getEditText().setText(viewModel.getDate());
@@ -46,6 +48,12 @@ public class ExpenseEdit extends Activity {
     }
 
     private void save(View view) {
+        if (Objects.nonNull(viewModel)){
+            viewModel.setDescription(description.getEditText().getText().toString());
+            viewModel.setDate(date.getEditText().getText().toString());
+            viewModel.setAmount(amount.getEditText().getText().toString());
+            viewModel.setCategory(category.getEditText().getText().toString());
+        }
         finish();
     }
 

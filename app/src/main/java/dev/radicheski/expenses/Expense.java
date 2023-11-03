@@ -1,10 +1,14 @@
 package dev.radicheski.expenses;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 
 public class Expense implements Serializable {
 
@@ -59,8 +63,16 @@ public class Expense implements Serializable {
     }
 
     public static class ViewModel {
-        private DateFormat dateFormat = DateFormat.getDateInstance();
-        private NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
+        private static DateFormat dateFormat;
+        private static NumberFormat numberFormat;
+
+        static {
+            dateFormat = DateFormat.getDateInstance();
+
+            numberFormat = NumberFormat.getNumberInstance(Locale.US);
+            numberFormat.setMinimumFractionDigits(2);
+            numberFormat.setMaximumFractionDigits(2);
+        }
 
         private final Expense expense;
 
@@ -73,18 +85,38 @@ public class Expense implements Serializable {
             return expense.getDescription();
         }
 
+        public void setDescription(String description) {
+            expense.setDescription(description);
+        }
 
         public String getDate() {
             return dateFormat.format(expense.getDate());
         }
 
+        public void setDate(String date) {
+            try {
+                Date newDate = dateFormat.parse(date);
+                expense.setDate(newDate);
+            } catch (ParseException e) {
+                Log.e("Expense.ViewModel", "Failed to parse date",  e);
+            }
+        }
 
         public String getAmount() {
             return numberFormat.format(expense.getAmount());
         }
 
+        public void setAmount(String amount) {
+            BigDecimal newAmount = new BigDecimal(amount.replaceAll("[^0-9.]", ""));
+            expense.setAmount(newAmount);
+        }
+
         public String getCategory() {
             return expense.getCategory();
+        }
+
+        public void setCategory(String category) {
+            expense.setCategory(category);
         }
 
     }
