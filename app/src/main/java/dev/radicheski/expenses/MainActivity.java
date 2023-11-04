@@ -1,6 +1,5 @@
 package dev.radicheski.expenses;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -16,7 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.airbnb.lottie.LottieAnimationView;
-
+import com.airbnb.lottie.LottieProperty;
+import com.airbnb.lottie.model.KeyPath;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
         LottieAnimationView lottieView = popupAnimation.findViewById(R.id.animation_view);
         lottieView.setRepeatCount(5);
+        lottieView.addValueCallback(new KeyPath("**"),
+                LottieProperty.COLOR_FILTER,
+                frameInfo -> new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP));
         lottieView.setAnimation(R.raw.loading);
         lottieView.addAnimatorListener(new AnimatorListenerAdapter() {
             @Override
