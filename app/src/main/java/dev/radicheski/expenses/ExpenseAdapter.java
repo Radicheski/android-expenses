@@ -82,9 +82,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         public void onClick(View v) {
             if (Objects.isNull(editor)) return;
 
-            int position = getAdapterPosition();
-            Expense expense = repository.get(position);
-            editor.edit(expense, () -> notifyItemChanged(position));
+            editor.edit(getAdapterPosition());
         }
     }
 

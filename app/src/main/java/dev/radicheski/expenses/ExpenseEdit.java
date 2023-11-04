@@ -11,6 +11,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
+import dev.radicheski.expenses.repository.MockedExpenseRepository;
+
 public class ExpenseEdit extends Activity {
 
     private TextInputLayout description;
@@ -37,7 +39,8 @@ public class ExpenseEdit extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (Objects.nonNull(extras))  {
-            Expense expense = (Expense) extras.getSerializable("expense");
+            int index = extras.getInt("expense");
+            Expense expense = MockedExpenseRepository.getInstance().get(index);
             viewModel = expense.toViewModel();
 
             description.getEditText().setText(viewModel.getDescription());

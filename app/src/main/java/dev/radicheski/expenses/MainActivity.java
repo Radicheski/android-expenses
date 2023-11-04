@@ -32,13 +32,11 @@ public class MainActivity extends AppCompatActivity {
 
     public class ExpenseEditor {
 
-        public void edit(Expense expense, Runnable onCompletion) {
+        public void edit(int expense) {
             Intent intent = new Intent(getBaseContext(), ExpenseEdit.class);
             intent.putExtra("expense", expense);
 
             startActivity(intent);
-
-            if (Objects.nonNull(onCompletion)) onCompletion.run();
         }
 
     }
