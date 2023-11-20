@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void showAnimation(Runnable nextAction) {
+    public void showAnimation(Runnable nextAction) {
         View popupAnimation = getLayoutInflater().inflate(R.layout.popup_animation, null);
         PopupWindow window = new PopupWindow(popupAnimation,
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -62,20 +62,23 @@ public class MainActivity extends AppCompatActivity {
         window.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
 
         LottieAnimationView lottieView = popupAnimation.findViewById(R.id.animation_view);
-        lottieView.setRepeatCount(5);
+        lottieView.setAnimation(R.raw.loading2);
+        lottieView.setRepeatCount(3);
+
+        lottieView.setSpeed(3);
+        lottieView.setScaleX(0.5f);
+        lottieView.setScaleY(0.5f);
         lottieView.addValueCallback(new KeyPath("**"),
                 LottieProperty.COLOR_FILTER,
                 frameInfo -> new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP));
-        lottieView.setAnimation(R.raw.loading);
         lottieView.addAnimatorListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                window.dismiss();
                 if (Objects.nonNull(nextAction)) nextAction.run();
+                window.dismiss();
             }
         });
-        lottieView.playAnimation();
     }
 
 }
